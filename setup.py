@@ -5,7 +5,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name='django-kafka',
-    version='0.0.1',
+    version='0.0.2',
     description='An utility library for django & kafka integration',
     package_dir={
         '': 'app',
