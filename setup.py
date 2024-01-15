@@ -5,12 +5,12 @@ with open('README.md', 'r') as f:
 
 setup(
     name='django-kafka',
-    version='0.0.2',
+    version='0.0.4',
     description='An utility library for django & kafka integration',
     package_dir={
         '': 'app',
     },
-    packages=find_packages(where='django_kafka'),
+    packages=find_packages(where='app'),
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/amritsaha607/django-kafka.git',
