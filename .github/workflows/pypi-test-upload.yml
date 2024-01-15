@@ -1,0 +1,29 @@
+name: Upload to Pypi Test
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.9]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install wheel & twine
+        run: |
+          pip3 install wheel
+          pip3 install twine
+      - name: Local build setup
+        run: python3 setup.py bdist_wheel sdist
+      - name: Publish package
+        run: twine upload dist/* -r testpypi -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
