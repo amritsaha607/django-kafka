@@ -29,9 +29,9 @@ def kafka_listener(function):
         consumer = get_kafka_consumer_from_config()
 
         try:
-            consumer.subscribe([settings.KAFKA_TOPIC_NAME])
+            consumer.subscribe(settings.KAFKA_TOPIC_NAMES)
             print(
-                f"Successfully subscribed kafka consumer to topic {settings.KAFKA_TOPIC_NAME}")
+                f"Successfully subscribed kafka consumer to topic {settings.KAFKA_TOPIC_NAMES}")
 
             while True:
                 message = consumer.poll(0)
