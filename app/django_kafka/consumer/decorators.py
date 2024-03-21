@@ -1,4 +1,5 @@
 import sys
+import traceback
 
 from confluent_kafka import KafkaError, KafkaException
 from django.conf import settings
@@ -6,8 +7,23 @@ from django.conf import settings
 from .consumer import get_kafka_consumer_from_config
 
 
+def handle_exception(function):
+    """
+    A decorator to catch & log exception
+    """
+    def wrapper(*args, **kwargs):
+        try:
+            return function(*args, **kwargs)
+        except Exception as e:
+            print(
+                f"Error in kafka consumer : {traceback.format_exc()}")
+
+    return wrapper
+
+
 def kafka_listener(function):
 
+    @handle_exception
     def validate_message(message):
 
         if message is None:
@@ -38,7 +54,8 @@ def kafka_listener(function):
                 if not validate_message(message):
                     continue
 
-                function(message, *args, **kwargs)
+                function_handled = handle_exception(function)
+                function_handled(message, *args, **kwargs)
 
         finally:
             consumer.close()
